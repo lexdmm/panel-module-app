@@ -1,19 +1,9 @@
-import {
-    Column,
-    Entity,
-    JoinColumn,
-    OneToMany,
-    PrimaryGeneratedColumn,
-} from 'typeorm'
-import { BaseEntity } from '../common/entities/base.entity'
+import { Column, Entity, JoinColumn, OneToMany } from 'typeorm'
+import { BaseEntity } from '../common/entities/baseentity'
 import { FormData } from './form.data.entity'
-
 
 @Entity()
 export class Form extends BaseEntity {
-    @PrimaryGeneratedColumn('uuid')
-    id: string
-
     @Column({ length: 150, nullable: false })
     email: string
 

@@ -1,19 +1,10 @@
-import {
-    Column,
-    Entity,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-} from 'typeorm'
-import { BaseEntity } from '../common/entities/base.entity'
+import { Column, Entity, ManyToOne } from 'typeorm'
+import { BaseEntity } from '../common/entities/baseentity'
 import { FormRoles } from '../common/enum/EnumForms'
 import { Form } from './form.entity'
 
-
 @Entity()
 export class FormData extends BaseEntity {
-    @PrimaryGeneratedColumn('uuid')
-    id: string
-
     @Column({ length: 300, nullable: false })
     question: string
 

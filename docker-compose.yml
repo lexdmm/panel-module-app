@@ -3,12 +3,12 @@ version: '3.9'
 services:
 
   api:
-    container_name: panel-form-generator-api
+    container_name: panel-module-app-api
     build: . #build Dockerfile
     ports:
       - ${API_PORT}:${API_PORT}
     volumes:
-      - .:/app/panel-form-generator # the volume mirrors the sources into the container so it catches development changes
+      - .:/app/panel-module-app # the volume mirrors the sources into the container so it catches development changes
     environment:
       DB_HOST: database
       DB_PORT: 5432

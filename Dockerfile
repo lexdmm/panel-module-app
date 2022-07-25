@@ -1,6 +1,6 @@
 FROM node:16.14.2-alpine
 
-WORKDIR /app/panel-form-generator
+WORKDIR /app/panel-module-app
 
 CMD npm run start:docker:dev
 

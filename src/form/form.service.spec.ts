@@ -1,7 +1,7 @@
 import { InternalServerErrorException } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
 import { getRepositoryToken } from '@nestjs/typeorm'
-import TestUtil from './common/test/TestUtil'
+import TestUtil from './common/test/test.util'
 import { CreateFormDto } from './dto/create.form.dto'
 import { Form } from './entities/form.entity'
 import { FormService } from './form.service'

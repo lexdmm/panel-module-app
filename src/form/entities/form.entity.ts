@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany } from 'typeorm'
+import { Column, Entity, OneToMany } from 'typeorm'
 import { BaseEntity } from '../common/entities/baseentity'
 import { FormData } from './form.data.entity'
 
@@ -17,9 +17,8 @@ export class Form extends BaseEntity {
     isModule: boolean
 
     @OneToMany(() => FormData, (formData) => formData.form, {
-        onDelete: 'CASCADE',
-        nullable: false
+        cascade: ['insert', 'update'],
+        eager: false
     })
-    @JoinColumn()
     formData: FormData[]
 }

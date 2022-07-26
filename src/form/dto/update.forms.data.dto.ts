@@ -3,6 +3,14 @@ import { FormRoles } from '../common/enum/EnumForms'
 
 export class UpdateFormsDataDto {
     @IsString()
+    @IsNotEmpty()
+    id: string
+
+    @IsString()
+    @IsNotEmpty({ message: 'The question in the form cannot be empty!' })
+    formId: string
+
+    @IsString()
     @IsNotEmpty({ message: 'The question in the form cannot be empty!' })
     @IsOptional()
     question: string

@@ -31,7 +31,7 @@ export class CreateFormDto {
     @IsObject()
     @ValidateNested()
     @Type(() => CreateFormsDataDto)
-    dataForms: CreateFormsDataDto[]
+    formData: CreateFormsDataDto[]
 
     @IsNotEmpty({ message: 'The created date cannot be empty!' })
     createdDate?: Date

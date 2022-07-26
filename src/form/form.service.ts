@@ -2,6 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateFormDto } from './dto/create.form.dto'
+import { RespFormDto } from './dto/resp.form.dto'
 import { UpdateFormDto } from './dto/update-forms.dto'
 import { Form } from './entities/form.entity'
 import { IFormRepository } from './repositories/form.repository'
@@ -15,45 +16,67 @@ export class FormService extends IFormRepository<Form> {
         super()
     }
 
-    async findAll(): Promise<Form[]> {
-        const form = await this.formRepository.find()
+    async findAll(): Promise<RespFormDto[]> {
+        const form = await this.formRepository
+            .createQueryBuilder('form')
+            .innerJoinAndSelect('form.formData', 'formData')
+            .getMany()
+
         return form
     }
 
-    async findOneById(id: string): Promise<Form> {
-        const form = await this.formRepository.findOneBy({ id })
+    async findOneById(id: string): Promise<RespFormDto> {
+        const form = await this.formRepository
+            .createQueryBuilder('form')
+            .innerJoinAndSelect('form.formData', 'formData')
+            .where('form.id = :id', { id: id })
+            .getOne()
+
         if (!form) {
-            throw new InternalServerErrorException('Form not found')
+            throw new InternalServerErrorException('Form not found!')
         }
         return form
     }
-    async create(data: CreateFormDto): Promise<Form> {
-        const form = this.formRepository.create(data)
-        const formSaved = await this.formRepository.save(form)
 
-        if (!formSaved) {
+    async create(data: CreateFormDto): Promise<RespFormDto> {
+        const form = this.formRepository.create(data)
+        const newForm = await this.formRepository.save(form)
+
+        if (!newForm) {
             throw new InternalServerErrorException(
                 'There was an error creating the form. Try again.'
             )
         }
-        return formSaved
+        return newForm
     }
 
-    async update(id: string, data: UpdateFormDto): Promise<Form> {
+    async update(id: string, data: UpdateFormDto): Promise<RespFormDto> {
         const form = await this.findOneById(id)
-        await this.formRepository.update(form, { ...data })
 
-        const formUpdated = this.formRepository.create({ ...form, ...data })
-        return formUpdated
+        form.name = data.name
+        form.email = data.email
+        form.description = data.description
+        form.isModule = data.isModule
+
+        data.formData.forEach((data, index) => {
+            form.formData[index] = { ...form.formData[index], ...data }
+        })
+
+        const formUpdate = await this.formRepository.save(form)
+
+        return formUpdate
     }
 
-    async delete(id: string): Promise<boolean> {
-        const form = await this.findOneById(id)
-        const deleted = await this.formRepository.delete(form)
+    async delete(id: string): Promise<object> {
+        const deleted = await this.formRepository
+            .createQueryBuilder('form')
+            .where('form.id = :id', { id: id })
+            .delete()
+            .execute()
 
         if (deleted) {
-            return true
+            return { status: true, message: 'Deleted success!' }
         }
-        return false
+        return { status: false, message: 'Could not delete form!' }
     }
 }

@@ -9,7 +9,7 @@ export default class TestUtil {
         form.name = 'Form Name'
         form.description = 'Form Description'
         form.isModule = false
-        form.dataForms = new Array<CreateFormsDataDto>()
+        form.formData = new Array<CreateFormsDataDto>()
 
         return form
     }

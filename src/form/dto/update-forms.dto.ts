@@ -35,7 +35,8 @@ export class UpdateFormDto {
     @IsObject()
     @ValidateNested()
     @Type(() => UpdateFormsDataDto)
-    dataForms: UpdateFormsDataDto[]
+    @IsOptional()
+    formData: UpdateFormsDataDto[]
 
     @IsNotEmpty({ message: 'The created date cannot be empty!' })
     @IsOptional()

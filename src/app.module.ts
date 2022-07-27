@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { join } from 'path'
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
 import { FormModule } from './form/form.module'
 
 @Module({
@@ -29,8 +27,6 @@ import { FormModule } from './form/form.module'
             }
         }),
         FormModule
-    ],
-    controllers: [AppController],
-    providers: [AppService]
+    ]
 })
 export class AppModule {}

@@ -17,25 +17,33 @@ export class FormService extends IFormRepository<Form> {
     }
 
     async findAll(): Promise<RespFormDto[]> {
-        const form = await this.formRepository
-            .createQueryBuilder('form')
-            .innerJoinAndSelect('form.formData', 'formData')
-            .getMany()
+        try {
+            const form = await this.formRepository
+                .createQueryBuilder('form')
+                .innerJoinAndSelect('form.formData', 'formData')
+                .getMany()
 
-        return form
+            return form
+        } catch (error) {
+            throw new InternalServerErrorException(error)
+        }
     }
 
     async findOneById(id: string): Promise<RespFormDto> {
-        const form = await this.formRepository
-            .createQueryBuilder('form')
-            .innerJoinAndSelect('form.formData', 'formData')
-            .where('form.id = :id', { id: id })
-            .getOne()
+        try {
+            const form = await this.formRepository
+                .createQueryBuilder('form')
+                .innerJoinAndSelect('form.formData', 'formData')
+                .where('form.id = :id', { id: id })
+                .getOne()
 
-        if (!form) {
-            throw new InternalServerErrorException('Form not found!')
+            if (!form) {
+                throw new InternalServerErrorException('Form not found!')
+            }
+            return form
+        } catch (error) {
+            throw new InternalServerErrorException(error)
         }
-        return form
     }
 
     async create(data: CreateFormDto): Promise<RespFormDto> {
@@ -51,20 +59,23 @@ export class FormService extends IFormRepository<Form> {
     }
 
     async update(id: string, data: UpdateFormDto): Promise<RespFormDto> {
-        const form = await this.findOneById(id)
+        try {
+            const form = await this.findOneById(id)
 
-        form.name = data.name
-        form.email = data.email
-        form.description = data.description
-        form.isModule = data.isModule
+            form.name = data.name
+            form.email = data.email
+            form.description = data.description
+            form.isModule = data.isModule
 
-        data.formData.forEach((data, index) => {
-            form.formData[index] = { ...form.formData[index], ...data }
-        })
+            data.formData.forEach((data, index) => {
+                form.formData[index] = { ...form.formData[index], ...data }
+            })
 
-        const formUpdate = await this.formRepository.save(form)
-
-        return formUpdate
+            const formUpdate = await this.formRepository.save(form)
+            return formUpdate
+        } catch (error) {
+            throw new InternalServerErrorException(error)
+        }
     }
 
     async delete(id: string): Promise<object> {

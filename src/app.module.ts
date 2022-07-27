@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { join } from 'path'
 import { FormModule } from './form/form.module'
+import { UserModule } from './user/user.module'
 
 @Module({
     imports: [
@@ -26,7 +27,8 @@ import { FormModule } from './form/form.module'
                 }
             }
         }),
-        FormModule
+        FormModule,
+        UserModule
     ]
 })
 export class AppModule {}

@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import {
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateFormDto } from './dto/create.form.dto'
@@ -61,7 +65,6 @@ export class FormService extends IFormRepository<Form> {
     async update(id: string, data: UpdateFormDto): Promise<RespFormDto> {
         try {
             const form = await this.findOneById(id)
-
             form.name = data.name
             form.email = data.email
             form.description = data.description
@@ -71,8 +74,11 @@ export class FormService extends IFormRepository<Form> {
                 form.formData[index] = { ...form.formData[index], ...data }
             })
 
-            const formUpdate = await this.formRepository.save(form)
-            return formUpdate
+            if (!form) {
+                throw new NotFoundException(`Form ${id} not found`)
+            }
+
+            return await this.formRepository.save(form)
         } catch (error) {
             throw new InternalServerErrorException(error)
         }

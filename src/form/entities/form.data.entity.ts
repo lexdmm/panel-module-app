@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
-import { BaseEntity } from '../common/entities/baseentity'
+import { BaseEntity } from '../../common/entities/baseentity'
 import { FormRoles } from '../common/enum/EnumForms'
 import { Form } from './form.entity'
 

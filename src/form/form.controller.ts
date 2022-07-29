@@ -7,6 +7,7 @@ import {
     Patch,
     Post
 } from '@nestjs/common'
+import { ApiBody } from '@nestjs/swagger'
 import { CreateFormDto } from './dto/create.form.dto'
 import { UpdateFormDto } from './dto/update-forms.dto'
 import { FormService } from './form.service'
@@ -22,9 +23,10 @@ export class FormController {
 
     @Get(':id')
     findById(@Param('id') id: string) {
-        return this.formService.findOneById(id)
+        return this.formService.findById(id)
     }
 
+    @ApiBody({ type: [CreateFormDto] })
     @Post('create')
     create(@Body() createFormDto: CreateFormDto) {
         return this.formService.create(createFormDto)
@@ -37,7 +39,6 @@ export class FormController {
 
     @Delete('delete/:id')
     delete(@Param('id') id: string) {
-        const resp: Promise<object> = this.formService.delete(id)
-        return resp
+        return this.formService.delete(id)
     }
 }

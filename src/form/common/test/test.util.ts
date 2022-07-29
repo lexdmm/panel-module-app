@@ -1,20 +1,21 @@
-import { CreateFormDto } from '../../dto/create.form.dto'
-import { CreateFormsDataDto } from '../../dto/create.forms.data.dto'
+import { RespFormDto } from '../../dto/resp.form.dto'
+import { UpdateFormsDataDto } from '../../dto/update.forms.data.dto'
 
 export default class TestUtil {
-    static getValidForm(): CreateFormDto {
-        const form = new CreateFormDto()
+    static getValidForm(): RespFormDto {
+        const form = new RespFormDto()
 
+        form.id = '72faef04-8f48-43c0-9b20-cc72e196c0e9'
         form.email = 'email_test@test.com'
         form.name = 'Form Name'
         form.description = 'Form Description'
         form.isModule = false
-        form.formData = new Array<CreateFormsDataDto>()
+        form.formData = new Array<UpdateFormsDataDto>()
 
         return form
     }
 
-    async createForms(): Promise<CreateFormDto> {
+    async createForms(): Promise<RespFormDto> {
         return TestUtil.getValidForm()
     }
 }

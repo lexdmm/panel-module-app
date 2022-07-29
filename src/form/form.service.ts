@@ -5,20 +5,19 @@ import {
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
+import { IResponseError } from '../common/interface/response.error'
 import { CreateFormDto } from './dto/create.form.dto'
 import { RespFormDto } from './dto/resp.form.dto'
 import { UpdateFormDto } from './dto/update-forms.dto'
 import { Form } from './entities/form.entity'
-import { IFormRepository } from './repositories/form.repository'
+import { IFormRepository } from './repository/form.repository'
 
 @Injectable()
-export class FormService extends IFormRepository<Form> {
+export class FormService implements IFormRepository<Form> {
     constructor(
         @InjectRepository(Form) //Ta dizendo que o papel de criar a instancia é do repositório
         private formRepository: Repository<Form>
-    ) {
-        super()
-    }
+    ) {}
 
     async findAll(): Promise<RespFormDto[]> {
         try {
@@ -33,7 +32,7 @@ export class FormService extends IFormRepository<Form> {
         }
     }
 
-    async findOneById(id: string): Promise<RespFormDto> {
+    async findById(id: string): Promise<RespFormDto> {
         try {
             const form = await this.formRepository
                 .createQueryBuilder('form')
@@ -64,7 +63,7 @@ export class FormService extends IFormRepository<Form> {
 
     async update(id: string, data: UpdateFormDto): Promise<RespFormDto> {
         try {
-            const form = await this.findOneById(id)
+            const form = await this.findById(id)
             form.name = data.name
             form.email = data.email
             form.description = data.description
@@ -84,7 +83,7 @@ export class FormService extends IFormRepository<Form> {
         }
     }
 
-    async delete(id: string): Promise<object> {
+    async delete(id: string): Promise<IResponseError> {
         const deleted = await this.formRepository
             .createQueryBuilder('form')
             .where('form.id = :id', { id: id })

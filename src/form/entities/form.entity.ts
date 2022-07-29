@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany } from 'typeorm'
-import { BaseEntity } from '../common/entities/baseentity'
+import { BaseEntity } from '../../common/entities/baseentity'
 import { FormData } from './form.data.entity'
 
 @Entity()

@@ -20,7 +20,10 @@ async function bootstrap() {
         .setDescription('API responsible for creating dynamic system forms')
         .setVersion('1.0')
         .addTag('api/doc/form')
-        .addBearerAuth()
+        .addBearerAuth(
+            { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+            'jwt'
+        )
         .build()
     const formDocument = SwaggerModule.createDocument(app, optionsForm, {
         include: [FormModule]
@@ -32,7 +35,10 @@ async function bootstrap() {
         .setDescription('API responsible for management users')
         .setVersion('1.0')
         .addTag('api/doc/user')
-        .addBearerAuth()
+        .addBearerAuth(
+            { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+            'jwt'
+        )
         .build()
     const userDocument = SwaggerModule.createDocument(app, optionsUser, {
         include: [UserModule]

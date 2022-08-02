@@ -24,21 +24,21 @@ import { UserService } from './user.service'
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    @ApiBearerAuth('token')
+    @ApiBearerAuth('jwt')
     @UseGuards(AuthGuardJwt)
     @Get('all')
     findAll() {
         return this.userService.findAll()
     }
 
-    @ApiBearerAuth('token')
+    @ApiBearerAuth('jwt')
     @UseGuards(AuthGuardJwt)
     @Get(':id')
     findById(@Param('id') id: string) {
         return this.userService.findById(id)
     }
 
-    @ApiBearerAuth('token')
+    @ApiBearerAuth('jwt')
     @UseGuards(AuthGuardJwt)
     @Post('email')
     findByEmail(@Body() email: string) {
@@ -49,21 +49,21 @@ export class UserController {
         description: 'The record has been successfully created.'
     })
     @ApiForbiddenResponse({ description: 'Forbidden.' })
-    @ApiBearerAuth('token')
+    @ApiBearerAuth('jwt')
     @UseGuards(AuthGuardJwt)
     @Post('create')
     create(@Body() createFormDto: CreateUserDto) {
         return this.userService.create(createFormDto)
     }
 
-    @ApiBearerAuth('token')
+    @ApiBearerAuth('jwt')
     @UseGuards(AuthGuardJwt)
     @Patch('update/:id')
     update(@Param('id') id: string, @Body() updateFormDto: UpdateUserDto) {
         return this.userService.update(id, updateFormDto)
     }
 
-    @ApiBearerAuth('token')
+    @ApiBearerAuth('jwt')
     @UseGuards(AuthGuardJwt)
     @Delete('delete/:id')
     delete(@Param('id') id: string) {

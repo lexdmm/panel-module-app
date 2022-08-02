@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, refs } from '@nestjs/swagger'
 import { Type } from 'class-transformer'
 import {
     IsBoolean,
@@ -45,7 +45,8 @@ export class CreateFormDto {
 
     @ApiProperty({
         description:
-            'Array with the dataset of each field chosen by the user in the form'
+            'Array with the dataset of each field chosen by the user in the form',
+        type: () => Object
     })
     @IsDefined()
     @IsNotEmptyObject()
